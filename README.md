@@ -1,5 +1,5 @@
 # Oracle Cloud Integration
-Houses code for Datadog OCI integration. Includes code for:
+Houses code for Oracle OCI integration. Includes code for:
 * OCI's log collections pipeline.
 * OCI Metric collection setup.
 
