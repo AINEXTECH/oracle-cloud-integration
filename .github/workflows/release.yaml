@@ -1,0 +1,37 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Criar arquivo zip da pasta myrmex-oci-orm
+        run: |
+          zip -r myrmex-oci-orm.zip myrmex-oci-orm
+
+      - name: Criar GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          body: "Descrição da release automática"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Asset (myrmex-oci-orm.zip)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            myrmex-oci-orm.zip#myrmex-oci-orm-${{ github.ref_name }}.zip
+          token: ${{ secrets.GH_ORGANIZATION_ACCESS_TOKEN }}
