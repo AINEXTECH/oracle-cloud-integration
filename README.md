@@ -1,12 +1,8 @@
 # Oracle Cloud Integration
-Houses code for Datadog OCI integration. Includes code for:
-* OCI's log collections pipeline.
-* OCI Metric collection setup.
+Houses code for Myrmex's OCI integration. Includes code for:
+* OCI's log collections permissions.
 
-
-
-## Deploy to OCI (metrics)
-
+## Create OCI Policy Stack
 The setup creates an OCI resource manager (ORM) stack which uses terraform to:
 
 * Create resources on OCI to send metrics to Datadog using OCI connector hub
