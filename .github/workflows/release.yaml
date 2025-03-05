@@ -27,11 +27,11 @@ jobs:
           body: "Descrição da release automática"
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_ORGANIZATION_ACCESS_TOKEN }}
 
       - name: Upload Asset (myrmex-oci-orm.zip)
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            myrmex-oci-orm.zip#myrmex-oci-orm-${{ github.ref_name }}.zip
+            myrmex-oci-orm.zip#myrmex-oci-orm.zip
           token: ${{ secrets.GH_ORGANIZATION_ACCESS_TOKEN }}
