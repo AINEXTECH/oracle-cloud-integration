@@ -60,20 +60,20 @@ resource "oci_identity_group" "read_policy_group" {
   freeform_tags = local.freeform_tags
 }
 
-resource "oci_identity_user_group_membership" "dd_user_group_membership" {
+resource "oci_identity_user_group_membership" "mrx_user_group_membership" {
     depends_on     = [oci_identity_user.read_only_user, oci_identity_group.read_policy_group]
     #Required
     group_id = oci_identity_group.read_policy_group.id
     user_id = oci_identity_user.read_only_user.id
 }
 
-resource "oci_identity_policy" "metrics_policy" {
-  depends_on     = [oci_identity_dynamic_group.serviceconnector_group, oci_identity_user_group_membership.dd_user_group_membership]
+resource "oci_identity_policy" "logs_policy" {
+  depends_on     = [oci_identity_dynamic_group.serviceconnector_group, oci_identity_user_group_membership.mrx_user_group_membership]
   compartment_id = var.tenancy_ocid
   description    = "[DO NOT REMOVE] Policy to have any connector hub read from monitoring source and write to a target function"
   name           = var.myrmex_logs_policy
   statements = [
-    "Allow dynamic-group Default/${var.dynamic_group_name} to read metrics in tenancy",
+    "Allow dynamic-group Default/${var.dynamic_group_name} to read logs in tenancy",
     "Allow group Default/${oci_identity_group.read_policy_group.name} to read all-resources in tenancy",
     "Allow group Default/${oci_identity_group.read_policy_group.name} to read all-events in tenancy"
   ]
