@@ -80,4 +80,3 @@ resource "oci_identity_policy" "logs_policy" {
   defined_tags  = {}
   freeform_tags = local.freeform_tags
 }
-
