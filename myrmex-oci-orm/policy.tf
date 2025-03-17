@@ -72,11 +72,11 @@ resource "oci_identity_policy" "logs_policy" {
   compartment_id = var.tenancy_ocid
   description    = "[DO NOT REMOVE] Policy to have any connector hub read from monitoring source and write to a target function"
   name           = var.myrmex_logs_policy
-  statements = [
-    "Allow dynamic-group Default/${var.dynamic_group_name} to read logs in tenancy",
+  statements = ["Allow dynamic-group Default/${var.dynamic_group_name} to read logs in tenancy",
     "Allow group Default/${oci_identity_group.read_policy_group.name} to read all-resources in tenancy",
-    "Allow group Default/${oci_identity_group.read_policy_group.name} to read all-events in tenancy"
+    "Allow group Default/${oci_identity_group.read_policy_group.name} to read audit-events in tenancy"
   ]
   defined_tags  = {}
   freeform_tags = local.freeform_tags
 }
+
