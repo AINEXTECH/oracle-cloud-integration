@@ -14,24 +14,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Criar arquivo zip da pasta myrmex-oci-orm
+      - name: Create zip files for all ORM stacks
         run: |
           zip -r myrmex-oci-orm.zip myrmex-oci-orm
+          zip -r myrmex-oci-integration-key.zip oci-integration-key
+          zip -r myrmex-oci-integration-vm.zip oci-integration-vm
 
-      - name: Criar GitHub Release
+      - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: "Release ${{ github.ref_name }}"
-          body: "Descrição da release automática"
+          body: "Automated release"
           draft: false
           prerelease: false
           token: ${{ secrets.GH_ORGANIZATION_ACCESS_TOKEN }}
 
-      - name: Upload Asset (myrmex-oci-orm.zip)
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
             myrmex-oci-orm.zip#myrmex-oci-orm.zip
+            myrmex-oci-integration-key.zip#myrmex-oci-integration-key.zip
+            myrmex-oci-integration-vm.zip#myrmex-oci-integration-vm.zip
           token: ${{ secrets.GH_ORGANIZATION_ACCESS_TOKEN }}

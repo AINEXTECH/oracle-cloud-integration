@@ -1,0 +1,74 @@
+title: "Myrmex OCI Integration — IAM + API Key"
+description: "Creates an IAM user, group and broad management policies for Myrmex to discover and manage OCI resources. No compute instance is created."
+informationalText: "After applying this stack, generate API Key credentials manually in Identity > Users > myrmex-integration-user > API Keys, or use the OCI CLI to upload a public key."
+schemaVersion: "1.1.0"
+version: "20240101"
+locale: "en"
+
+variableGroups:
+  - title: "Required"
+    variables:
+      - tenancy_ocid
+    visible: true
+
+  - title: "Identity Configuration"
+    variables:
+      - user_name
+      - user_email
+      - user_group_name
+      - policy_name
+    visible: true
+
+variables:
+  tenancy_ocid:
+    title: "Tenancy OCID"
+    description: "The OCID of your OCI tenancy. Found at Administration > Tenancy Details."
+    type: string
+    required: true
+
+  user_name:
+    title: "IAM User Name"
+    description: "Name of the IAM user to be created for Myrmex integration."
+    type: string
+    default: "myrmex-integration-user"
+    required: true
+
+  user_email:
+    title: "IAM User Email"
+    description: "Email address for the Myrmex integration IAM user."
+    type: string
+    default: "myrmex-integration@myrmex.ai"
+    required: true
+
+  user_group_name:
+    title: "IAM Group Name"
+    description: "Name of the IAM group that will receive management permissions."
+    type: string
+    default: "MyrmexIntegrationGroup"
+    required: true
+
+  policy_name:
+    title: "Policy Name"
+    description: "Name of the IAM policy that grants permissions to the group."
+    type: string
+    default: "myrmex-integration-policy"
+    required: true
+
+outputs:
+  user_ocid:
+    title: "IAM User OCID"
+    displayText: "OCID of the created Myrmex IAM user"
+    type: copyableString
+    visible: true
+
+  group_name:
+    title: "IAM Group Name"
+    displayText: "Name of the created Myrmex IAM group"
+    type: copyableString
+    visible: true
+
+  tenancy_home_region:
+    title: "Home Region"
+    displayText: "Tenancy home region key"
+    type: copyableString
+    visible: true

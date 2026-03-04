@@ -1,0 +1,184 @@
+title: "Myrmex OCI Integration — IAM + VM Agent"
+description: "Creates an IAM user, group, board management policies and a Compute Instance (VM) with the Myrmex agent pre-installed. The VM uses only a private IP — no public IP is assigned."
+informationalText: "The Compute Instance will automatically download and install the Myrmex agent on first boot using the provided token. Ensure the subnet has outbound internet access (via NAT Gateway) so the agent can reach api.myrmex.ai."
+schemaVersion: "1.1.0"
+version: "20240101"
+locale: "en"
+
+variableGroups:
+  - title: "Required — OCI"
+    variables:
+      - tenancy_ocid
+      - compartment_ocid
+      - region
+    visible: true
+
+  - title: "Required — Myrmex Agent"
+    variables:
+      - myrmex_token
+      - context_id
+      - oci_account_name
+    visible: true
+
+  - title: "Required — Network"
+    variables:
+      - subnet_id
+      - availability_domain
+      - assign_public_ip
+    visible: true
+
+  - title: "Identity Configuration"
+    variables:
+      - user_name
+      - user_email
+      - user_group_name
+      - policy_name
+      - dynamic_group_name
+    visible: true
+
+  - title: "Compute Instance"
+    variables:
+      - instance_name
+      - instance_shape
+      - instance_ocpus
+      - instance_memory_in_gbs
+    visible: true
+
+variables:
+  tenancy_ocid:
+    title: "Tenancy OCID"
+    description: "The OCID of your OCI tenancy. Found at Administration > Tenancy Details."
+    type: string
+    required: true
+
+  compartment_ocid:
+    title: "Compartment OCID"
+    description: "OCID of the compartment where the Compute Instance will be created."
+    type: oci:identity:compartment:id
+    required: true
+
+  region:
+    title: "Region"
+    description: "OCI Region for the Compute Instance (e.g. sa-saopaulo-1, us-ashburn-1)."
+    type: oci:identity:region:name
+    required: true
+
+  myrmex_token:
+    title: "Myrmex Installation Token"
+    description: "Myrmex EDR installation token, found in the Myrmex console."
+    type: password
+    required: true
+
+  context_id:
+    title: "Myrmex Context ID"
+    description: "Myrmex context ID, found in the Myrmex console."
+    type: string
+    required: true
+
+  oci_account_name:
+    title: "OCI Account Name"
+    description: "Friendly name for this OCI account — used as part of the agent hostname."
+    type: string
+    default: "oci-account"
+    required: true
+
+  subnet_id:
+    title: "Subnet OCID"
+    description: "OCID of a private subnet where the agent VM will be placed. Must have outbound internet access via NAT Gateway."
+    type: oci:core:subnet:id
+    dependsOn:
+      compartmentId: compartment_ocid
+    required: true
+
+  availability_domain:
+    title: "Availability Domain"
+    description: "Availability Domain for the instance (AD-1, AD-2 or AD-3)."
+    type: enum
+    enum:
+      - "AD-1"
+      - "AD-2"
+      - "AD-3"
+    default: "AD-1"
+    required: true
+
+  assign_public_ip:
+    title: "Assign Public IP"
+    description: "Whether to assign a public IP to the Myrmex agent instance. Disabled by default for security — the instance communicates outbound via NAT Gateway."
+    type: boolean
+    default: false
+
+  instance_name:
+    title: "Instance Name"
+    description: "Display name of the Myrmex agent Compute Instance."
+    type: string
+    default: "myrmex-agent"
+    required: true
+
+  instance_shape:
+    title: "Instance Shape"
+    description: "OCI Compute shape for the Myrmex agent."
+    type: oci:core:instanceshape:name
+    dependsOn:
+      compartmentId: compartment_ocid
+    default: "VM.Standard.E4.Flex"
+    required: true
+
+  instance_ocpus:
+    title: "OCPUs"
+    description: "Number of OCPUs (for Flex shapes)."
+    type: integer
+    default: 1
+    minimum: 1
+    maximum: 8
+
+  instance_memory_in_gbs:
+    title: "Memory (GB)"
+    description: "Memory in GB (for Flex shapes)."
+    type: integer
+    default: 1
+    minimum: 1
+    maximum: 128
+
+  user_name:
+    title: "IAM User Name"
+    type: string
+    default: "myrmex-integration-user"
+
+  user_email:
+    title: "IAM User Email"
+    type: string
+    default: "myrmex-integration@myrmex.ai"
+
+  user_group_name:
+    title: "IAM Group Name"
+    type: string
+    default: "MyrmexIntegrationGroup"
+
+  policy_name:
+    title: "Policy Name"
+    type: string
+    default: "myrmex-integration-policy"
+
+  dynamic_group_name:
+    title: "Dynamic Group Name"
+    type: string
+    default: "myrmex-vm-dynamic-group"
+
+outputs:
+  instance_private_ip:
+    title: "Agent Instance Private IP"
+    displayText: "Private IP of the Myrmex agent Compute Instance"
+    type: copyableString
+    visible: true
+
+  instance_state:
+    title: "Instance State"
+    displayText: "Current state of the Myrmex agent instance"
+    type: copyableString
+    visible: true
+
+  user_name:
+    title: "IAM User Name"
+    displayText: "Name of the Myrmex IAM user"
+    type: copyableString
+    visible: true
