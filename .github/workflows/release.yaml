@@ -16,9 +16,9 @@ jobs:
 
       - name: Create zip files for all ORM stacks
         run: |
-          zip -r myrmex-oci-orm.zip myrmex-oci-orm
-          zip -r myrmex-oci-integration-key.zip oci-integration-key
-          zip -r myrmex-oci-integration-vm.zip oci-integration-vm
+          cd myrmex-oci-orm        && zip -r ../myrmex-oci-orm.zip .               && cd ..
+          cd oci-integration-key   && zip -r ../myrmex-oci-integration-key.zip .   && cd ..
+          cd oci-integration-vm    && zip -r ../myrmex-oci-integration-vm.zip .    && cd ..
 
       - name: Create GitHub Release
         id: create_release
