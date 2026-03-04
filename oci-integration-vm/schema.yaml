@@ -66,10 +66,9 @@ variables:
   myrmex_token:
     title: "Myrmex Installation Token"
     description: "Myrmex EDR installation token, found in the Myrmex console."
-    type: password
+    type: string
     required: true
     sensitive: true
-    confirmation: true
 
   context_id:
     title: "Myrmex Context ID"
