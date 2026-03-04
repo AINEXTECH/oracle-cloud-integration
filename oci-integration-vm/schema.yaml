@@ -68,12 +68,15 @@ variables:
     description: "Myrmex EDR installation token, found in the Myrmex console."
     type: password
     required: true
+    sensitive: true
+    confirmation: true
 
   context_id:
     title: "Myrmex Context ID"
     description: "Myrmex context ID, found in the Myrmex console."
     type: string
     required: true
+    sensitive: true
 
   oci_account_name:
     title: "OCI Account Name"

@@ -27,6 +27,7 @@ variable "myrmex_token" {
 
 variable "context_id" {
   type        = string
+  sensitive   = true
   description = "Myrmex context ID (provided by Myrmex platform)"
 }
 
